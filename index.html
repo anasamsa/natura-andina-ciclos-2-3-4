@@ -90,7 +90,7 @@ img{max-width:100%}
 /* ciclos */
 .ciclo{display:flex;gap:22px;padding:20px 0;border-top:1px solid var(--line)}
 .ciclo:first-child{border-top:0}
-.ciclo__n{flex:none;width:40px;height:40px;border-radius:10px;background:var(--ink);color:#fff;font-family:var(--serif);font-size:16px;font-weight:500;display:flex;align-items:center;justify-content:center}
+.ciclo__n{flex:none;min-width:92px;padding:9px 14px;border-radius:10px;background:var(--ink);color:#fff;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;align-self:flex-start;margin-top:3px;white-space:nowrap}
 .ciclo__t{font-family:var(--serif);font-size:19px;font-weight:460;margin:5px 0 10px;line-height:1.2}
 .ciclo__l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
 .ciclo__l li{position:relative;padding-left:20px;font-size:13.5px;color:var(--muted);line-height:1.5}
@@ -141,7 +141,9 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
 @media (max-width:760px){
   .wrap,.hero__inner,.closing__inner{padding-left:22px;padding-right:22px}
   .block{padding:58px 0}
-  .ejes,.comp__grid{grid-template-columns:1fr}
+  .ejes,.comp__grid,.res{grid-template-columns:1fr}
+  .res__cyc{border-left:0;border-top:1px solid var(--line)}
+  .ciclo{flex-direction:column;gap:12px}
   .inc{grid-template-columns:1fr}
   .band{flex-direction:column;gap:14px}
   .facts{gap:16px 26px}
@@ -170,6 +172,39 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
   .comp,.eje,.ciclo,.band,table,.inc__c{break-inside:avoid}
   .seclabel{break-after:avoid}
 }
+
+/* selector de combinación */
+.picker{display:flex;gap:30px;flex-wrap:wrap;margin:0 0 22px}
+.ctl{display:flex;flex-direction:column;gap:8px}
+.ctl>span{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--label)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--card)}
+.seg button{appearance:none;border:0;background:transparent;font:inherit;font-size:13.5px;font-weight:700;
+  color:var(--muted);padding:11px 18px;cursor:pointer;transition:background .16s,color .16s;white-space:nowrap}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.seg button:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
+.res{display:grid;grid-template-columns:1fr 1fr;background:var(--card);border:1px solid var(--line);
+  border-radius:14px;overflow:hidden;margin:0 0 16px}
+.res__main{padding:30px 32px}
+.res__cyc{padding:26px 32px;border-left:1px solid var(--line);display:flex;flex-direction:column;justify-content:center}
+.res__k{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--label);margin:0 0 10px}
+.res__v{font-family:var(--serif);font-size:clamp(34px,5vw,50px);font-weight:460;margin:0;line-height:1;color:var(--ink)}
+.res__iva{font-size:13px;color:var(--label);margin:9px 0 0}
+.res__d{font-size:13.5px;color:var(--muted);margin:18px 0 0;line-height:1.55;max-width:36ch}
+.res__row{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line)}
+.res__row:last-child{border-bottom:0}
+.res__row span{font-size:13.5px;color:var(--muted)}
+.res__row b{font-family:var(--serif);font-size:17px;font-weight:460;white-space:nowrap}
+.opts{display:flex;flex-direction:column;gap:8px;margin:0 0 24px}
+.opt-row{display:flex;align-items:baseline;justify-content:space-between;gap:18px;padding:14px 20px;
+  border:1px solid var(--line);border-radius:11px;background:var(--card);cursor:pointer;text-align:left;
+  font:inherit;width:100%;transition:border-color .16s,background .16s}
+.opt-row:hover{border-color:var(--green)}
+.opt-row.on{border-color:var(--green);border-width:2px;background:var(--green-soft);padding:13px 19px}
+.opt-row:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.opt-row .l{font-size:14px;font-weight:700;color:var(--ink)}
+.opt-row .l em{display:block;font-style:normal;font-weight:400;font-size:12.5px;color:var(--muted);margin-top:3px}
+.opt-row .p{font-family:var(--serif);font-size:19px;font-weight:460;white-space:nowrap;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -208,16 +243,16 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
         <h3 class="eje__t">¿Las consultoras del ciclo 4 son las mismas del ciclo 2?</h3>
         <p class="eje__d">El set fotográfico es la pieza que más pesa en la campaña. Repetirlo o no es lo que más mueve el presupuesto.</p>
         <div class="opt">
-          <p class="opt__n">Escenario A</p>
-          <p class="opt__t">Consultoras distintas en cada ciclo</p>
-          <p class="opt__d">Seis sets en total. Cada ciclo estrena sus propias protagonistas y la campaña muestra más caras de la red.</p>
-        </div>
-        <div class="opt">
           <p class="opt__n">Escenario B</p>
           <p class="opt__t">Las mismas consultoras en los dos ciclos</p>
           <p class="opt__d">Tres sets en total. Se produce una vez y sirve para los ciclos 2 y 4. Gana continuidad de personaje y ahorra la mitad de la producción fotográfica.</p>
         </div>
-        <p class="eje__foot">Diferencia entre A y B: <b>$10.500.000</b> antes de IVA.</p>
+        <div class="opt">
+          <p class="opt__n">Escenario A</p>
+          <p class="opt__t">Consultoras distintas en cada ciclo</p>
+          <p class="opt__d">Seis sets en total. Cada ciclo estrena sus propias protagonistas y la campaña muestra más caras de la red.</p>
+        </div>
+        <p class="eje__foot">Diferencia entre A y B: <b>$8.925.000</b> antes de IVA.</p>
       </div>
       <div class="eje reveal">
         <p class="eje__k">Decisión 2</p>
@@ -248,16 +283,16 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
     <div class="comp reveal">
       <div class="comp__head">
         <h3 class="comp__t">Set fotográfico de consultoras · por país</h3>
-        <span class="comp__p"><em>Por país</em>$3.500.000</span>
+        <span class="comp__p"><em>Por país</em>$2.975.000</span>
       </div>
       <div class="comp__grid">
         <div>
           <p class="comp__k">Qué contiene</p>
-          <p class="comp__v">Las <b>dos consultoras del país en el mismo encuadre</b>, cuerpo completo, más la creación por separado de los dos brindes que acompañan la pieza.</p>
+          <p class="comp__v">Las <b>dos consultoras del país en el mismo encuadre</b>, cuerpo completo y <b>usando los brindes de la campaña</b>, más la creación por separado de esos brindes.</p>
         </div>
         <div>
           <p class="comp__k">Alcance</p>
-          <p class="comp__v">Cubre <b>resolver dos personajes al tiempo</b>: escala creíble entre ambas, posturas que conversen entre sí y cuerpo completo, que es el encuadre más exigente de sostener. Un set con una sola consultora costaría <b>$1.750.000</b>. Este vale el doble porque son dos personajes que hay que resolver a la vez, no uno.</p>
+          <p class="comp__v">Cubre <b>resolver dos personajes al tiempo</b>: escala creíble entre ambas, posturas que conversen entre sí y cuerpo completo, que es el encuadre más exigente de sostener. A eso se suma <b>generar los brindes por separado y componerlos sobre las consultoras</b>, para que se vean usándolos con naturalidad. Un set con una sola consultora costaría <b>$1.750.000</b>: este cuesta un 70% más, no el doble, porque las dos comparten fondo, iluminación y montaje.</p>
         </div>
       </div>
     </div>
@@ -385,17 +420,17 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
 
 <section class="block">
   <div class="wrap">
-    <p class="seclabel reveal">Ya incluido</p>
-    <h2 class="sectitle reveal">Lo que no se cobra aparte</h2>
-    <p class="secsub reveal">Tres cosas que suelen facturarse como adicionales y que en esta cotización ya están dentro del valor de cada video.</p>
+    <p class="seclabel reveal">Alcance de los videos</p>
+    <h2 class="sectitle reveal">Ambos videos incluyen</h2>
+    <p class="secsub reveal">El guion, los dos formatos y las tres voces en off entran dentro del valor de cada pieza.</p>
     <div class="inc">
       <div class="inc__c reveal">
         <p class="inc__t">El guion</p>
-        <p class="inc__d">Cada video llega con su guion escrito y aprobado. No es una línea aparte ni un costo de arranque.</p>
+        <p class="inc__d">Cada video llega con su guion escrito y aprobado, listo para producir.</p>
       </div>
       <div class="inc__c reveal">
         <p class="inc__t">Los dos formatos</p>
-        <p class="inc__d">Entrega horizontal y versión reel. El reel no es un recorte: obliga a recomponer cada plano para vertical, y por eso es el adicional que más pesa dentro de la pieza.</p>
+        <p class="inc__d">Entrega horizontal y versión reel. El reel no es un recorte: obliga a recomponer cada plano para vertical, y por eso es lo que más pesa dentro de la pieza.</p>
       </div>
       <div class="inc__c reveal">
         <p class="inc__t">Las tres voces en off</p>
@@ -412,7 +447,7 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
     <p class="secsub reveal">La producción se reparte en tres ciclos. El ciclo 3 es igual en cualquier escenario; los ciclos 2 y 4 son los que dependen de la decisión 1.</p>
     <div class="reveal">
       <div class="ciclo">
-        <span class="ciclo__n">2</span>
+        <span class="ciclo__n">Ciclo 2</span>
         <div>
           <h3 class="ciclo__t">Arranque de campaña</h3>
           <ul class="ciclo__l">
@@ -424,7 +459,7 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
         </div>
       </div>
       <div class="ciclo">
-        <span class="ciclo__n">3</span>
+        <span class="ciclo__n">Ciclo 3</span>
         <div>
           <h3 class="ciclo__t">Brindes</h3>
           <ul class="ciclo__l">
@@ -436,7 +471,7 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
         </div>
       </div>
       <div class="ciclo">
-        <span class="ciclo__n">4</span>
+        <span class="ciclo__n">Ciclo 4</span>
         <div>
           <h3 class="ciclo__t">Cierre</h3>
           <ul class="ciclo__l">
@@ -455,45 +490,49 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
     <p class="seclabel reveal">Los cuatro caminos</p>
     <h2 class="sectitle reveal">Cuánto cuesta cada combinación</h2>
     <p class="secsub reveal">Las cuatro incluyen la campaña completa de los tres ciclos. Lo único que cambia entre ellas es cuántas veces se produce el set fotográfico y cuántas consultoras salen en el video héroe.</p>
-    <div class="tbl-wrap reveal">
-      <table>
-        <thead>
-          <tr>
-            <th>Combinación</th>
-            <th class="r">Subtotal</th>
-            <th class="r">IVA 19%</th>
-            <th class="r">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="cmb">Escenario A · Opción 1<em>Consultoras distintas en cada ciclo, hasta tres personajes en el video</em></td>
-            <td class="r num">$40.845.000</td>
-            <td class="r num">$7.760.550</td>
-            <td class="r num tot">$48.605.550</td>
-          </tr>
-          <tr>
-            <td class="cmb">Escenario A · Opción 2<em>Consultoras distintas en cada ciclo, el casting completo en el video</em></td>
-            <td class="r num">$43.382.500</td>
-            <td class="r num">$8.242.675</td>
-            <td class="r num tot">$51.625.175</td>
-          </tr>
-          <tr>
-            <td class="cmb">Escenario B · Opción 1<em>Las mismas consultoras en los dos ciclos, hasta tres personajes en el video</em></td>
-            <td class="r num">$30.345.000</td>
-            <td class="r num">$5.765.550</td>
-            <td class="r num tot">$36.110.550</td>
-          </tr>
-          <tr>
-            <td class="cmb">Escenario B · Opción 2<em>Las mismas consultoras en los dos ciclos, el casting completo en el video</em></td>
-            <td class="r num">$32.882.500</td>
-            <td class="r num">$6.247.675</td>
-            <td class="r num tot">$39.130.175</td>
-          </tr>
-        </tbody>
-      </table>
+
+    <div class="picker reveal">
+      <div class="ctl">
+        <span>Las consultoras del ciclo 4</span>
+        <div class="seg" role="group" aria-label="Escenario">
+          <button type="button" data-esc="B" aria-pressed="true">B · las mismas</button>
+          <button type="button" data-esc="A" aria-pressed="false">A · distintas</button>
+        </div>
+      </div>
+      <div class="ctl">
+        <span>Personajes en el video héroe</span>
+        <div class="seg" role="group" aria-label="Opción de video">
+          <button type="button" data-op="1" aria-pressed="true">1 · hasta tres</button>
+          <button type="button" data-op="2" aria-pressed="false">2 · el casting completo</button>
+        </div>
+      </div>
     </div>
-    <p class="note">Valores en pesos colombianos. Los subtotales no incluyen IVA; la columna de total ya lo incorpora al 19%.</p>
+
+    <div class="res reveal">
+      <div class="res__main">
+        <p class="res__k">Esta combinación</p>
+        <p class="res__v num" id="resV">$28.770.000</p>
+        <p class="res__iva">más IVA del 19%</p>
+        <p class="res__d" id="resD"></p>
+      </div>
+      <div class="res__cyc">
+        <div class="res__row"><span>Ciclo 2 · Arranque de campaña</span><b class="num" id="rc2"></b></div>
+        <div class="res__row"><span>Ciclo 3 · Brindes</span><b class="num" id="rc3"></b></div>
+        <div class="res__row"><span>Ciclo 4 · Cierre</span><b class="num" id="rc4"></b></div>
+      </div>
+    </div>
+
+    <div class="opts reveal" id="opts"></div>
+
+    <div class="band reveal" style="border-left-color:var(--green)">
+      <div class="band__tag"><span>Una opción más</span>El saldo de Colombia</div>
+      <div>
+        <p class="band__txt">Del paquete de créditos que ya está andando en Colombia <b>queda un saldo sin consumir</b>. Si les sirve, se puede aplicar a esta campaña y descontarlo del valor de arriba.</p>
+        <p class="band__txt">Nos dicen y revisamos juntos cuánto queda y hasta dónde alcanza a cubrir de estos tres ciclos.</p>
+      </div>
+    </div>
+
+    <p class="note">Valores en pesos colombianos, antes de IVA.</p>
   </div>
 </section>
 
@@ -537,6 +576,56 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
     });
   },{threshold:0.12, rootMargin:'0px 0px -6% 0px'});
   reveals.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var P={set:2975000,por:1050000,brCP:1575000,brEC:1750000,v1:5075000,v2:7612500,vs:3045000};
+  var esc="B", op="1";
+  var f=new Intl.NumberFormat("es-CO",{maximumFractionDigits:0});
+  function m(n){return "$"+f.format(n);}
+  function vid(o){return o==="1"?P.v1:P.v2;}
+  function c2(o){return 3*P.set+3*P.por+vid(o)+P.vs;}
+  function c3(){return P.brCP+P.brEC+2*P.por;}
+  function c4(e){return e==="A"?3*P.set+3*P.por:3*P.por;}
+  function tot(e,o){return c2(o)+c3()+c4(e);}
+  var DESC={A:"Consultoras distintas en cada ciclo",B:"Las mismas consultoras en los dos ciclos"},
+      DESO={"1":"hasta tres personajes en el video","2":"el casting completo en el video"};
+  var COMBOS=[["B","1"],["B","2"],["A","1"],["A","2"]];
+
+  function render(){
+    document.getElementById("resV").textContent=m(tot(esc,op));
+    document.getElementById("rc2").textContent=m(c2(op));
+    document.getElementById("rc3").textContent=m(c3());
+    document.getElementById("rc4").textContent=m(c4(esc));
+    document.getElementById("resD").textContent=DESC[esc]+", "+DESO[op]+".";
+    var box=document.getElementById("opts"); box.textContent="";
+    COMBOS.forEach(function(k){
+      var b=document.createElement("button");
+      b.type="button"; b.className="opt-row"+(k[0]===esc&&k[1]===op?" on":"");
+      var l=document.createElement("span"); l.className="l";
+      l.appendChild(document.createTextNode("Escenario "+k[0]+" · Opción "+k[1]));
+      var e=document.createElement("em"); e.textContent=DESC[k[0]]+", "+DESO[k[1]];
+      l.appendChild(e); b.appendChild(l);
+      var pz=document.createElement("span"); pz.className="p num";
+      pz.textContent=m(tot(k[0],k[1])); b.appendChild(pz);
+      b.addEventListener("click",function(){ esc=k[0]; op=k[1]; sync(); render(); });
+      box.appendChild(b);
+    });
+  }
+  function sync(){
+    document.querySelectorAll("[data-esc]").forEach(function(b){
+      b.setAttribute("aria-pressed",String(b.getAttribute("data-esc")===esc));});
+    document.querySelectorAll("[data-op]").forEach(function(b){
+      b.setAttribute("aria-pressed",String(b.getAttribute("data-op")===op));});
+  }
+  document.querySelectorAll("[data-esc]").forEach(function(b){
+    b.addEventListener("click",function(){ esc=b.getAttribute("data-esc"); sync(); render(); });});
+  document.querySelectorAll("[data-op]").forEach(function(b){
+    b.addEventListener("click",function(){ op=b.getAttribute("data-op"); sync(); render(); });});
+  render();
 })();
 </script>
 </body>

@@ -204,15 +204,7 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
 .opt-row:focus-visible{outline:2px solid var(--green);outline-offset:2px}
 .opt-row .l{font-size:14px;font-weight:700;color:var(--ink)}
 .opt-row .l em{display:block;font-style:normal;font-weight:400;font-size:12.5px;color:var(--muted);margin-top:3px}
-.opt-row .p{font-family:var(--serif);font-size:19px;font-weight:460;white-space:nowrap;color:var(--ink);text-align:right}
-.opt-row .p em{display:block;font-family:var(--sans);font-style:normal;font-size:12px;font-weight:400;
-  color:var(--label);text-decoration:line-through;margin-bottom:2px}
-.res__row.sep{border-top:1px solid var(--ink);margin-top:8px;padding-top:13px}
-.res__row.sep span{color:var(--ink);font-weight:700}
-.res__row.disc b{color:var(--green)}
-.res__row.fin{border-bottom:0;padding-top:4px}
-.res__row.fin span{color:var(--ink);font-weight:700}
-.res__row.fin b{font-size:21px}
+.opt-row .p{font-family:var(--serif);font-size:19px;font-weight:460;white-space:nowrap;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -519,7 +511,7 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
     <div class="res reveal">
       <div class="res__main">
         <p class="res__k">Esta combinación</p>
-        <p class="res__v num" id="resV">$18.770.000</p>
+        <p class="res__v num" id="resV">$28.770.000</p>
         <p class="res__iva">más IVA del 19%</p>
         <p class="res__d" id="resD"></p>
       </div>
@@ -527,22 +519,19 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
         <div class="res__row"><span>Ciclo 2 · Arranque de campaña</span><b class="num" id="rc2"></b></div>
         <div class="res__row"><span>Ciclo 3 · Brindes</span><b class="num" id="rc3"></b></div>
         <div class="res__row"><span>Ciclo 4 · Cierre</span><b class="num" id="rc4"></b></div>
-        <div class="res__row sep"><span>Producción</span><b class="num" id="rprod"></b></div>
-        <div class="res__row disc"><span>Saldo del paquete de Colombia</span><b class="num">−$10.000.000</b></div>
-        <div class="res__row fin"><span>Total</span><b class="num" id="rfin"></b></div>
       </div>
     </div>
 
     <div class="opts reveal" id="opts"></div>
 
     <div class="band reveal" style="border-left-color:var(--green)">
-      <div class="band__tag"><span>Ya aplicado</span>Descuento de Colombia</div>
+      <div class="band__tag"><span>Una opción más</span>El saldo de Colombia</div>
       <div>
-        <p class="band__txt">Del paquete de créditos que ya está andando en Colombia queda saldo sin consumir. <b>Aplicamos $10.000.000 de ese saldo a esta campaña</b>, ya descontados en los valores de arriba.</p>
+        <p class="band__txt">Del paquete de créditos que ya está andando en Colombia <b>queda un saldo sin consumir</b>. Si les sirve, se puede aplicar a esta campaña y descontarlo del valor de arriba.</p>
       </div>
     </div>
 
-    <p class="note">Valores en pesos colombianos, antes de IVA. Los totales ya tienen descontados los $10.000.000 del saldo del paquete de Colombia.</p>
+    <p class="note">Valores en pesos colombianos, antes de IVA.</p>
   </div>
 </section>
 
@@ -593,7 +582,6 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
 (function(){
   "use strict";
   var P={set:2975000,por:1050000,brCP:1575000,brEC:1750000,v1:5075000,v2:7612500,vs:3045000};
-  var DESCUENTO=10000000;
   var esc="B", op="1";
   var f=new Intl.NumberFormat("es-CO",{maximumFractionDigits:0});
   function m(n){return "$"+f.format(n);}
@@ -607,13 +595,10 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
   var COMBOS=[["B","1"],["B","2"],["A","1"],["A","2"]];
 
   function render(){
-    var prod=tot(esc,op), fin=prod-DESCUENTO;
-    document.getElementById("resV").textContent=m(fin);
+    document.getElementById("resV").textContent=m(tot(esc,op));
     document.getElementById("rc2").textContent=m(c2(op));
     document.getElementById("rc3").textContent=m(c3());
     document.getElementById("rc4").textContent=m(c4(esc));
-    document.getElementById("rprod").textContent=m(prod);
-    document.getElementById("rfin").textContent=m(fin);
     document.getElementById("resD").textContent=DESC[esc]+", "+DESO[op]+".";
     var box=document.getElementById("opts"); box.textContent="";
     COMBOS.forEach(function(k){
@@ -624,10 +609,7 @@ a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
       var e=document.createElement("em"); e.textContent=DESC[k[0]]+", "+DESO[k[1]];
       l.appendChild(e); b.appendChild(l);
       var pz=document.createElement("span"); pz.className="p num";
-      var an=document.createElement("em"); an.textContent=m(tot(k[0],k[1]));
-      pz.appendChild(an);
-      pz.appendChild(document.createTextNode(m(tot(k[0],k[1])-DESCUENTO)));
-      b.appendChild(pz);
+      pz.textContent=m(tot(k[0],k[1])); b.appendChild(pz);
       b.addEventListener("click",function(){ esc=k[0]; op=k[1]; sync(); render(); });
       box.appendChild(b);
     });
